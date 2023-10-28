@@ -1,0 +1,8 @@
+sbt ls-exports/publishLocal
+
+scala-cli scripts2.13/import-dependencies.sc
+
+scala-cli scripts scripts/ls-receiver.sc
+scala-cli scripts scripts/ls-caller.sc
+
+sbt "ls-caller/runMain example.callLsFunctionViaAvroSerialization"
