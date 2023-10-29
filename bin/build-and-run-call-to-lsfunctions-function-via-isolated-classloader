@@ -1,0 +1,15 @@
+#! /bin/sh
+
+# first we need to publish the exported trait locally
+sbt ls-exports/publishLocal
+
+# Now we will create a list of dependencies for both the ls-exports and ls-receiver (the implementation of LsFunctions trait)
+# under ~/.functions-remote-config/.local . These text files are read by the isolated classloader when invoking ls-receiver.
+scala-cli scripts2.13/import-dependencies.sc
+
+# Now we will generate the code for LsFunctions
+scala-cli scripts scripts/ls-receiver.sc
+scala-cli scripts scripts/ls-caller.sc
+
+# Finally we are ready to call it via ls-caller.
+sbt "-Dfunctions.debug" "ls-caller/runMain example.callLsFunctionViaAvroSerialization"
