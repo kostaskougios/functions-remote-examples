@@ -1,5 +1,12 @@
 #! /bin/sh
 
+# NOTE: at the moment generating the classes for isolated class loaders
+# is a rather complex process. This is due to that sbt runs in scala 2.12
+# but the functions-remote generator is in scala 3 which means we can't
+# run it within sbt. This is going to be improved later on so that all
+# the build can be configured within sbt. For now we will use scala-cli
+# scripts.
+
 # first we need to publish the exported trait locally
 sbt ls-exports/publishLocal
 
