@@ -10,3 +10,4 @@ val ProjectRoot = os.pwd
 val generatorConfig = GeneratorConfig.withDefaults()
 
 val LsExportsDep = "com.example:ls-exports_3:0.1-SNAPSHOT"
+val CatsLsExportsDep = "com.example:cats-ls-exports_3:0.1-SNAPSHOT"

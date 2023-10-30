@@ -1,0 +1,7 @@
+#! /bin/sh
+
+sbt cats-ls-exports/publishLocal
+
+scala-cli scripts2.13 scripts2.13/import-dependencies-for-cats-exports.sc
+
+scala-cli scripts scripts/cats-http4s-ls-receiver.sc

@@ -10,7 +10,9 @@ ThisBuild / scalaVersion := scala3Version
 
 ThisBuild / scalacOptions ++= Seq("-unchecked", "-feature", "-deprecation", "-Xmax-inlines", "64")
 
-// ----------------------- dependencies --------------------------------
+// -----------------------------------------------------------------------------------------------
+// Dependencies
+// -----------------------------------------------------------------------------------------------
 
 val FunctionsVersion  = "0.1-SNAPSHOT"
 val FunctionsCaller   = "org.functions-remote" %% "functions-caller"   % FunctionsVersion
@@ -43,17 +45,24 @@ val Http4sCirce = Seq("org.http4s" %% "http4s-circe" % Http4sVersion)
 val CatsEffect = "org.typelevel" %% "cats-effect" % "3.5.2"
 
 val CatsEffectsTesting = "org.typelevel" %% "cats-effect-testing-scalatest" % "1.5.0" % Test
-// ----------------------- modules --------------------------------
+// -----------------------------------------------------------------------------------------------
+// Example for IsolatedClassLoaderTransport
+// -----------------------------------------------------------------------------------------------
 
-// ----------------------- Example commands ---------------------------------------
+/** This contains the exported trait LsFunctions and related case classes. Normally this should not have any other dependencies, maybe just scalatest for the
+  * test classpath but none for the compile classpath.
+  */
 lazy val `ls-exports` = project
   .settings(
     libraryDependencies ++= Seq(ScalaTest),
+    // make sure exportedArtifact points to the full artifact name of the receiver.
     buildInfoKeys    := Seq[BuildInfoKey](organization, name, version, scalaVersion, "exportedArtifact" -> "ls-receiver_3"),
     buildInfoPackage := "commands.ls"
   )
   .enablePlugins(BuildInfoPlugin)
 
+/** This contains the implementation of LsFunctions
+  */
 lazy val `ls-receiver` = project
   .settings(
     Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
@@ -62,6 +71,8 @@ lazy val `ls-receiver` = project
   )
   .dependsOn(`ls-exports`)
 
+/** This is a user of LsFunctions but it doesn't depend on ls-receiver.
+  */
 lazy val `ls-caller` = project
   .settings(
     Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
@@ -69,3 +80,28 @@ lazy val `ls-caller` = project
     libraryDependencies ++= Seq(Avro4s, FunctionsCaller) ++ Circe
   )
   .dependsOn(`ls-exports`)
+
+// -----------------------------------------------------------------------------------------------
+// Cats effects examples
+// -----------------------------------------------------------------------------------------------
+
+/** The exports for cats-effects/http4s
+  */
+lazy val `cats-ls-exports` = project
+  .settings(
+    libraryDependencies ++= Seq(CatsEffect, ScalaTest),
+    // make sure exportedArtifact points to the full artifact name of the receiver.
+    buildInfoKeys    := Seq[BuildInfoKey](organization, name, version, scalaVersion, "exportedArtifact" -> "ls-receiver_3"),
+    buildInfoPackage := "commands.ls"
+  )
+  .enablePlugins(BuildInfoPlugin)
+
+/** This contains the cats-effects implementation of LsFunctions
+  */
+lazy val `cats-http4s-ls-receiver` = project
+  .settings(
+    Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
+    cleanFiles += baseDirectory.value / "src" / "main" / "generated",
+    libraryDependencies ++= Seq(Avro4s, FunctionsReceiver) ++ Http4sServer ++ Circe
+  )
+  .dependsOn(`cats-ls-exports`)
