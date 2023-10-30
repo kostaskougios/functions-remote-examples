@@ -1,7 +1,7 @@
 package example
 
 import commands.ls.LsFunctionsCallerFactory
-import functions.model.RuntimeConfig
+import functions.environment.RuntimeConfig
 
 /** Run me with -Dfunctions.debug to see debugging information.
   */
