@@ -7,7 +7,7 @@ import functions.environment.RuntimeConfig
   */
 def builder =
   val runtimeConfig = RuntimeConfig.withDefaults()
-  LsFunctionsCallerFactory.newClassloaderBuilder(runtimeConfig)
+  LsFunctionsCallerFactory.newIsolatedClassloaderBuilder(runtimeConfig)
 
 @main
 def callLsFunctionViaAvroSerialization() =

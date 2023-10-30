@@ -12,13 +12,13 @@ ThisBuild / scalacOptions ++= Seq("-unchecked", "-feature", "-deprecation", "-Xm
 
 // ----------------------- dependencies --------------------------------
 
-val FunctionsVersion = "0.1-SNAPSHOT"
-val FunctionsCaller = "org.functions-remote" %% "functions-caller" % FunctionsVersion
+val FunctionsVersion  = "0.1-SNAPSHOT"
+val FunctionsCaller   = "org.functions-remote" %% "functions-caller"   % FunctionsVersion
 val FunctionsReceiver = "org.functions-remote" %% "functions-receiver" % FunctionsVersion
 
 val ScalaTest = "org.scalatest" %% "scalatest" % "3.2.15" % Test
 
-val Avro4s   = "com.sksamuel.avro4s"              %% "avro4s-core" % "5.0.5"
+val Avro4s       = "com.sksamuel.avro4s" %% "avro4s-core" % "5.0.5"
 val CirceVersion = "0.14.1"
 
 val Circe = Seq(
@@ -46,7 +46,7 @@ val CatsEffectsTesting = "org.typelevel" %% "cats-effect-testing-scalatest" % "1
 // ----------------------- modules --------------------------------
 
 // ----------------------- Example commands ---------------------------------------
-lazy val `ls-exports`       = project
+lazy val `ls-exports` = project
   .settings(
     libraryDependencies ++= Seq(ScalaTest),
     buildInfoKeys    := Seq[BuildInfoKey](organization, name, version, scalaVersion, "exportedArtifact" -> "ls-receiver_3"),
@@ -57,6 +57,7 @@ lazy val `ls-exports`       = project
 lazy val `ls-receiver` = project
   .settings(
     Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
+    cleanFiles += baseDirectory.value / "src" / "main" / "generated",
     libraryDependencies ++= Seq(Avro4s, FunctionsReceiver) ++ Circe
   )
   .dependsOn(`ls-exports`)
@@ -64,6 +65,7 @@ lazy val `ls-receiver` = project
 lazy val `ls-caller` = project
   .settings(
     Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
+    cleanFiles += baseDirectory.value / "src" / "main" / "generated",
     libraryDependencies ++= Seq(Avro4s, FunctionsCaller) ++ Circe
   )
   .dependsOn(`ls-exports`)
