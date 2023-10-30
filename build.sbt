@@ -14,9 +14,10 @@ ThisBuild / scalacOptions ++= Seq("-unchecked", "-feature", "-deprecation", "-Xm
 // Dependencies
 // -----------------------------------------------------------------------------------------------
 
-val FunctionsVersion  = "0.1-SNAPSHOT"
-val FunctionsCaller   = "org.functions-remote" %% "functions-caller"   % FunctionsVersion
-val FunctionsReceiver = "org.functions-remote" %% "functions-receiver" % FunctionsVersion
+val FunctionsVersion      = "0.1-SNAPSHOT"
+val FunctionsCaller       = "org.functions-remote" %% "functions-caller"   % FunctionsVersion
+val FunctionsReceiver     = "org.functions-remote" %% "functions-receiver" % FunctionsVersion
+val FunctionsHttp4sClient = "org.functions-remote" %% "http4s-client"      % FunctionsVersion
 
 val ScalaTest = "org.scalatest" %% "scalatest" % "3.2.15" % Test
 
@@ -103,5 +104,15 @@ lazy val `cats-http4s-ls-receiver` = project
     Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
     cleanFiles += baseDirectory.value / "src" / "main" / "generated",
     libraryDependencies ++= Seq(Avro4s, FunctionsReceiver) ++ Http4sServer ++ Circe
+  )
+  .dependsOn(`cats-ls-exports`)
+
+/** The client for our http4s server
+  */
+lazy val `cats-http4s-ls-caller` = project
+  .settings(
+    Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
+    cleanFiles += baseDirectory.value / "src" / "main" / "generated",
+    libraryDependencies ++= Seq(Avro4s, FunctionsHttp4sClient) ++ Http4sClient ++ Circe
   )
   .dependsOn(`cats-ls-exports`)
