@@ -83,7 +83,7 @@ lazy val `ls-caller` = project
   .dependsOn(`ls-exports`)
 
 // -----------------------------------------------------------------------------------------------
-// Cats effects examples
+// Cats effects / http4s example
 // -----------------------------------------------------------------------------------------------
 
 /** The exports for cats-effects/http4s
