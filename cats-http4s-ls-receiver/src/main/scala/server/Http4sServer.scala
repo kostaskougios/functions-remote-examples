@@ -12,7 +12,7 @@ import org.http4s.server.middleware.Logger
 
 /** Note: the generated routes are better suited for backend to backend calls, all of them are via PUT requests with the body been the serialized function args.
   */
-object Http4sServerExampleMain extends IOApp.Simple:
+object Http4sServer extends IOApp.Simple:
   val run = newServer[IO](port"8080").useForever
 
   def newServer[F[_]: Async: Network](port: Port) =

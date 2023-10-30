@@ -6,3 +6,5 @@ scala-cli scripts2.13 scripts2.13/import-dependencies-for-cats-exports.sc
 
 scala-cli scripts scripts/cats-http4s-ls-receiver.sc
 scala-cli scripts scripts/cats-http4s-ls-caller.sc
+
+echo "Caller & Receiver classes are generated, now we are ready to run the server, Http4sServer and the client, Http4sClient"
