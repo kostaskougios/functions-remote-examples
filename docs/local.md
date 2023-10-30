@@ -25,7 +25,7 @@ functions-remote been a scala3 project, but it will be simplified in the future.
 └── scripts                     : scala-cli scripts to help us with the code generation configuration
 ```
 
-The rest of the documentation is inside the code, starting with [`build.sbt`](build.sbt)
+The rest of the documentation is inside the code, starting with [`build.sbt`](../build.sbt)
 and then the bash script that builds and runs the caller.
 
 [bash script that runs the build an executes ls-caller](../bin/build-and-run-call-to-lsfunctions-function-via-isolated-classloader)

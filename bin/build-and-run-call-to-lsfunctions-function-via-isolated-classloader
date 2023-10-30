@@ -7,13 +7,14 @@
 # the build can be configured within sbt. For now we will use scala-cli
 # scripts.
 
+# Please check out this repo and run this script to be able to view the generated code.
+
 # First we need to publish the exported trait locally. The published jar will be read by the code generator in order to
 # generate the caller / receiver / serialization / transport classes.
 sbt ls-exports/publishLocal
 
-# Now we will create a list of dependencies for both the ls-exports 
-# under ~/.functions-remote-config/. These text file is read by the isolated classloader when invoking ls-receiver
-# and also by the code generator.
+# Now we will create a list of dependencies (jars) for ls-exports
+# under ~/.functions-remote-config/. These text file is read by the code generator.
 scala-cli scripts2.13 scripts2.13/import-dependencies-for-exports.sc
 
 # Now we will generate the caller / receiver / serializers code for LsFunctions.
@@ -25,11 +26,11 @@ scala-cli scripts scripts/ls-caller.sc
 # Now that the receiver has the generated code, we can build & publish it
 sbt ls-receiver/publishLocal
 
-# We need a list of jars for the receiver for the isolated classloader (IsolatedClassLoaderTransport) to be able to load them. The
-# scripts generate a text file with the dependencies using coursier. But the classloader doesn't have any dependencies to Coursier
-# because it only needs to read the text file.
+# We need a list of jars for the receiver. The isolated classloader (IsolatedClassLoaderTransport) will use this to load the receiver at runtime.
+# The scripts generate a text file with the dependencies using coursier. The IsolatedClassLoaderTransport doesn't have any dependencies to Coursier
+# because it only needs to read the text file. This way the IsolatedClassLoaderTransport is very lightweight.
 scala-cli scripts2.13 scripts2.13/import-dependencies-for-receiver.sc
 
-# Finally we are ready to call it via ls-caller.
+# Finally we are ready to run our code. We can call LsFunctionsImpl via ls-caller.
 # We will enable functions.debug so that functions-remote dumps a lot of debugging information.
 sbt "-Dfunctions.debug" "ls-caller/runMain example.callLsFunctionViaAvroSerialization"
