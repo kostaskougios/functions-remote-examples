@@ -8,7 +8,7 @@ Start by looking at the exported functions: [LsFunctions](../cats-ls-exports/src
 
 
 Then follow the build script [build-cats-effects-http4s-receiver-and-caller](../bin/build-cats-effects-http4s-receiver-and-caller)
-and also examine the code in the projects 
+and also examine the code in these projects: 
 - cats-ls-exports , i.e. [LsFunctions](../cats-ls-exports/src/main/scala/commands/ls/LsFunctions.scala)
 - cats-http4s-ls-receiver i.e. [Http4sServer](../cats-http4s-ls-receiver/src/main/scala/server/Http4sServer.scala)
 - cats-http4s-ls-caller i.e. [Http4sClient](../cats-http4s-ls-caller/src/main/scala/client/Http4sClient.scala)
