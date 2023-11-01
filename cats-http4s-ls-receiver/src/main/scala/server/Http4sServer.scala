@@ -17,14 +17,15 @@ object Http4sServer extends IOApp.Simple:
 
   def newServer[F[_]: Async: Network](port: Port) =
     // The implementation of the exported trait
-    val impl           = new LsFunctionsImpl
-    // We want our server to respond to both json and avro requests
-    val testRoutesJson = LsFunctionsReceiverFactory.newJsonLsFunctionsRoutes(impl)
-    val testRoutesAvro = LsFunctionsReceiverFactory.newAvroLsFunctionsRoutes(impl)
+    val impl         = new LsFunctionsImpl
+    // We want our server to respond to both json and avro requests. We will use the
+    // generated LsFunctionsReceiverFactory factory to create all routes.
+    val routesJson   = LsFunctionsReceiverFactory.newJsonLsFunctionsRoutes(impl)
+    val routesAvro   = LsFunctionsReceiverFactory.newAvroLsFunctionsRoutes(impl)
     // So we setup both routes. Check the source code of the routes, they are by default
-    // configured to i.e. commands.ls.LsFunctions / ls / Json but this can be overridden.
-    val routes         = HttpRoutes.of(testRoutesJson.allRoutes orElse testRoutesAvro.allRoutes)
-    val finalHttpApp   = Logger.httpApp(true, true)(routes.orNotFound)
+    // configured to i.e. / commands.ls.LsFunctions / ls / Json but this can be overridden.
+    val routes       = HttpRoutes.of(routesJson.allRoutes orElse routesAvro.allRoutes)
+    val finalHttpApp = Logger.httpApp(true, true)(routes.orNotFound)
 
     EmberServerBuilder.default
       .withHost(ipv4"0.0.0.0")
