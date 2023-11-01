@@ -9,9 +9,10 @@ are running in the same box or remote boxes.
 
 Functions-remote is a code generator for calling functions "remotely", using different serialization methods (like json or avro), and different remote transports (like http).
 Remotely means we may use http as a transport (i.e. via http4s) or just use an isolated classloader as transport so that we can
-execute the function locally. We'll see all these in more details below as well as why it can be useful to use different transports.
+execute the function locally or maybe just spawn a new jvm to call the function. 
+We'll see all these in more details below as well as why it can be useful to use different transports.
 
-Effectively functions-remote allows the simplicity of `f(x) = y` no matter where `f` will really run.
+Effectively functions-remote allows the simplicity of `f(x) = y` no matter where `f` will really run. 
 
 The generated code is very readable and as if written by a person.
 
