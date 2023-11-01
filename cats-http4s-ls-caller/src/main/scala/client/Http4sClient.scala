@@ -11,17 +11,17 @@ object Http4sClient extends IOApp.Simple:
   val run = runClient[IO]
 
   def runClient[F[_]: Async: Network]: F[Unit] =
-    for x <- EmberClientBuilder
+    for results <- EmberClientBuilder
         .default[F]
         .build
         .use: client =>
           val serverUri  = uri"http://localhost:8080"
-          // We can test both json and avro serialization
+          // We can call the functions with both json and avro serialization
           val jsonCaller = LsFunctionsCallerFactory.newHttp4sJsonLsFunctions(client, serverUri)
           val avroCaller = LsFunctionsCallerFactory.newHttp4sAvroLsFunctions(client, serverUri)
 
           for
-            r1 <- jsonCaller.ls("/tmp/json")
-            r2 <- avroCaller.ls("/tmp/avro")
+            r1 <- jsonCaller.ls("/tmp/some-dir1")
+            r2 <- avroCaller.ls("/tmp/some-dir2")
           yield (r1, r2)
-    yield ()
+    yield println(results)
