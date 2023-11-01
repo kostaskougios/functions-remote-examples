@@ -16,7 +16,7 @@ Effectively functions-remote allows the simplicity of `f(x) = y` no matter where
 
 The generated code is very readable and as if written by a person.
 
-## The exported function
+## The exported functions
 
 Let's say we have the following functionality that simulates the `ls` command line tool to list files in a directory:
 
