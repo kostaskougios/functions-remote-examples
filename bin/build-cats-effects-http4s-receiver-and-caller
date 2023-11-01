@@ -1,10 +1,14 @@
 #! /bin/sh
 
+# First we need to publish the exported LsFunctions locally
 sbt cats-ls-exports/publishLocal
 
+# Now we will create the dependency files with the help of a scala-cli script
 scala-cli scripts2.13 scripts2.13/import-dependencies-for-cats-exports.sc
 
+# Generate code for the receiver
 scala-cli scripts scripts/cats-http4s-ls-receiver.sc
+# Generate code for the caller
 scala-cli scripts scripts/cats-http4s-ls-caller.sc
 
 echo "Caller & Receiver classes are generated, now we are ready to run the server, Http4sServer and the client, Http4sClient"
