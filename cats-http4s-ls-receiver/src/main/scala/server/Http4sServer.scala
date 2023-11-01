@@ -16,7 +16,7 @@ object Http4sServer extends IOApp.Simple:
   val run = newServer[IO](port"8080").useForever
 
   def newServer[F[_]: Async: Network](port: Port) =
-    // The implementation of the exported trait
+    // The implementation of the exported functions
     val impl         = new LsFunctionsImpl
     // We want our server to respond to both json and avro requests. We will use the
     // generated LsFunctionsReceiverFactory factory to create all routes.
