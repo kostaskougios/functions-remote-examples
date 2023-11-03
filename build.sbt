@@ -66,21 +66,27 @@ lazy val `ls-exports` = project
   */
 lazy val `ls-receiver` = project
   .settings(
-    Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
-    cleanFiles += baseDirectory.value / "src" / "main" / "generated",
+    receiverExports           := Seq(s"com.example:ls-exports_3:${version.value}"),
+    receiverJsonSerialization := true,
+    receiverAvroSerialization := true,
     libraryDependencies ++= Seq(Avro4s, FunctionsReceiver) ++ Circe
   )
   .dependsOn(`ls-exports`)
+  .enablePlugins(FunctionsRemotePlugin)
 
 /** This is a user of LsFunctions but it doesn't depend on ls-receiver.
   */
 lazy val `ls-caller` = project
   .settings(
-    Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
-    cleanFiles += baseDirectory.value / "src" / "main" / "generated",
+    callerExports                 := Seq(s"com.example:ls-exports_3:${version.value}"),
+    callerAvroSerialization       := true,
+    callerJsonSerialization       := true,
+    callerClassloaderTransport    := true,
+    callerClassloaderDependencies := Seq(s"com.example:ls-receiver_3:${version.value}"),
     libraryDependencies ++= Seq(Avro4s, FunctionsCaller) ++ Circe
   )
   .dependsOn(`ls-exports`)
+  .enablePlugins(FunctionsRemotePlugin)
 
 // -----------------------------------------------------------------------------------------------
 // Cats effects / http4s example
@@ -101,18 +107,24 @@ lazy val `cats-ls-exports` = project
   */
 lazy val `cats-http4s-ls-receiver` = project
   .settings(
-    Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
-    cleanFiles += baseDirectory.value / "src" / "main" / "generated",
+    receiverExports           := Seq(s"com.example:cats-ls-exports_3:${version.value}"),
+    receiverJsonSerialization := true,
+    receiverAvroSerialization := true,
+    receiverHttp4sRoutes      := true,
     libraryDependencies ++= Seq(Avro4s, FunctionsReceiver) ++ Http4sServer ++ Circe
   )
   .dependsOn(`cats-ls-exports`)
+  .enablePlugins(FunctionsRemotePlugin)
 
 /** The client for our http4s server
   */
 lazy val `cats-http4s-ls-caller` = project
   .settings(
-    Compile / unmanagedSourceDirectories += baseDirectory.value / "src" / "main" / "generated",
-    cleanFiles += baseDirectory.value / "src" / "main" / "generated",
+    callerExports               := Seq(s"com.example:cats-ls-exports_3:${version.value}"),
+    callerAvroSerialization     := true,
+    callerJsonSerialization     := true,
+    callerHttp4sClientTransport := true,
     libraryDependencies ++= Seq(Avro4s, FunctionsHttp4sClient) ++ Http4sClient ++ Circe
   )
   .dependsOn(`cats-ls-exports`)
+  .enablePlugins(FunctionsRemotePlugin)
