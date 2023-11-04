@@ -1,10 +1,11 @@
 #! /bin/sh
 
-# First we need to publish the exported trait locally. The published jar will be read by the code generator in order to
-# generate the caller / receiver / serialization / transport classes.
-# Then we need to publish ls-receiver locally because the jars are used by the isolated classloader to load and run the implementation.
-# (we do a compile first because it seems sbt doesn't see the generated classes if we just do a publishLocal)
-# Finally we run the caller.
+# - First we need to publish the exported trait's artifact locally. The published jar will be read by the code generator in order to
+#   generate the caller / receiver / serialization / transport classes. The code generator resolves the artifact locally or from
+#   a maven repository using Coursier.
+# - Then we need to publish ls-receiver locally because the jars are used by the isolated classloader to load and run the implementation.
+#   (we do a compile first because it seems sbt doesn't see the generated classes if we just do a publishLocal)
+# - Finally we run the caller which calls the functions. Internally the isolated class loader is used to load the function's impl.
 sbt clean ls-exports/publishLocal ls-receiver/compile ls-receiver/publishLocal
 sbt "-Dfunctions.debug" "ls-caller/runMain example.callLsFunctionViaAvroSerialization"
 

@@ -7,28 +7,24 @@ we want to just invoke the functions via an isolated classloader so that we don'
 
 To make it work there are a few steps:
 - create our module with the exported functions. Configure it in sbt. In this example, it is the `ls-exports` module.
-- publish it locally so that the jar is available
+- publish it locally so that the jar is available.
 - the generator then can read the jar and generate code for the caller and receiver.
-- create the receiver as a separate module where the exported functions are implemented and publish it locally
-- the isolated classloader or jvm runner need to know where all the jars of the receiver are located. Again with a small scala-cli script we can create a list of these jars.
-- create the caller (the code that calls the exported functions). The caller doesn't depend on the receiver and can have incompatible classpaths.
+- create the receiver (impl of the functions) as a separate module where the exported functions are implemented and publish it locally so that the isolated classloader can find it.
+- create the caller (the code that calls the exported functions). The caller doesn't depend on the receiver and can have incompatible classpaths. The generated
+    caller classes use the isolated class loader as a transport and the classloader loads all ls-receiver jars and invokes the actual implementation.
 
 
 Let's see the structure of our LsFunctions example. We will impl both the caller and receiver. 
-The build configuration is the most complicated part of functions-remote at the moment due to sbt using scala2.12 and 
-functions-remote been a scala3 project, but it will be simplified in the future.
 
 ```
-├── ls-caller                   : the caller, depends on ls-exports only but is able to call ls-receiver
-├── ls-exports                  : contains the exported traits , LsFunctions
-├── ls-receiver                 : contains LsFunctionsImpl and depends on ls-exports
-└── scripts                     : scala-cli scripts to help us with the code generation configuration
+├── ls-caller                   : the caller, depends on ls-exports only but is able to call ls-receiver via the IsolatedClassLoaderTransport
+├── ls-exports                  : contains the exported trait, LsFunctions
+└── ls-receiver                 : contains LsFunctionsImpl and depends on ls-exports
 ```
 
-The rest of the documentation is inside the code, starting with [`build.sbt`](../build.sbt)
-and then the bash script that builds and runs the caller.
+The rest of the documentation is inside the code, starting with [`build.sbt`](../build.sbt) where you can see how 
+the functions-remote-sbt-plugin is configured and used and then [the bash script that runs the build an executes ls-caller](../bin/build-and-run-call-to-lsfunctions-function-via-isolated-classloader).
 
-[bash script that runs the build an executes ls-caller](../bin/build-and-run-call-to-lsfunctions-function-via-isolated-classloader)
 
 # Using a separate jvm per call
 Not yet implemented
