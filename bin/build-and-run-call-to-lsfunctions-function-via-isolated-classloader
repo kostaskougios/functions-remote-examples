@@ -2,5 +2,9 @@
 
 # First we need to publish the exported trait locally. The published jar will be read by the code generator in order to
 # generate the caller / receiver / serialization / transport classes.
-sbt ls-exports/publishLocal ls-receiver/publishLocal "-Dfunctions.debug" "ls-caller/runMain example.callLsFunctionViaAvroSerialization"
+# Then we need to publish ls-receiver locally because the jars are used by the isolated classloader to load and run the implementation.
+# (we do a compile first because it seems sbt doesn't see the generated classes if we just do a publishLocal)
+# Finally we run the caller.
+sbt clean ls-exports/publishLocal ls-receiver/compile ls-receiver/publishLocal
+sbt "-Dfunctions.debug" "ls-caller/runMain example.callLsFunctionViaAvroSerialization"
 
