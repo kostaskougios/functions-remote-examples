@@ -2,6 +2,22 @@
 
 Note: Only for scala3. Currently, circe-json and avro4s serializations are supported.
 
+Note: At the moment there are no artifacts published on maven repos. To run the examples locally do:
+
+```shell
+git clone git@github.com:kostaskougios/functions-remote-sbt-plugins.git
+cd functions-remote-sbt-plugins
+sbt publishLocal
+
+cd ..
+git clone git@github.com:kostaskougios/functions-remote.git
+cd functions-remote
+sbt publishLocal
+cd ..
+```
+and you are ready to go.
+
+
 
 For scala, the most important ability of the language is the ability to call a function `f(x) = y` and get its results.
 And while we can do that within a jvm instance, it would be useful to be able to call functions this easily across jvms that
