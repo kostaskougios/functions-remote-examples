@@ -12,6 +12,7 @@ sbt publishLocal
 cd ..
 git clone git@github.com:kostaskougios/functions-remote.git
 cd functions-remote
+# ignore some compilation errors of tests modules, it is OK
 sbt publishLocal
 cd ..
 ```
