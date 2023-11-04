@@ -8,7 +8,7 @@ name := "functions-remote-examples"
 
 ThisBuild / scalaVersion := scala3Version
 
-ThisBuild / scalacOptions ++= Seq("-unchecked", "-feature", "-deprecation", "-Xmax-inlines", "64")
+ThisBuild / scalacOptions ++= Seq("-unchecked", "-feature", "-deprecation")
 
 // -----------------------------------------------------------------------------------------------
 // Dependencies
