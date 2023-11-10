@@ -20,7 +20,7 @@ trait LsFunctions[F[_]: Async]:
     *
     * The 1st param set in a method are parameters that are converted to URL params and the type must be compatible with http4s, i.e. IntVar, LongVar or String.
     *
-    * For the ls method, path will be part of the URL but lsOptions must be posted. See the generated LsFunctionsHttp4sRoutes routes.
+    * For the `ls` method, path will be part of the URL but lsOptions must be posted. See the generated LsFunctionsHttp4sRoutes routes.
     */
   def ls(path: String)(lsOptions: LsOptions = LsOptions.Defaults): F[LsResult]
 
