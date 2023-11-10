@@ -1,13 +1,9 @@
 val scala3Version = "3.3.1"
 
-ThisBuild / version := "0.1-SNAPSHOT"
-
+ThisBuild / version      := "0.1-SNAPSHOT"
 ThisBuild / organization := "com.example"
-
-name := "functions-remote-examples"
-
+name                     := "functions-remote-examples"
 ThisBuild / scalaVersion := scala3Version
-
 ThisBuild / scalacOptions ++= Seq("-unchecked", "-feature", "-deprecation")
 
 // -----------------------------------------------------------------------------------------------
@@ -19,35 +15,17 @@ val FunctionsCaller       = "org.functions-remote" %% "functions-caller"   % Fun
 val FunctionsReceiver     = "org.functions-remote" %% "functions-receiver" % FunctionsVersion
 val FunctionsHttp4sClient = "org.functions-remote" %% "http4s-client"      % FunctionsVersion
 
-val ScalaTest = "org.scalatest" %% "scalatest" % "3.2.15" % Test
-
+val ScalaTest    = "org.scalatest"       %% "scalatest"   % "3.2.15" % Test
 val Avro4s       = "com.sksamuel.avro4s" %% "avro4s-core" % "5.0.5"
 val CirceVersion = "0.14.1"
-
-val Circe = Seq(
+val Circe        = Seq(
   "io.circe" %% "circe-core",
   "io.circe" %% "circe-generic",
   "io.circe" %% "circe-parser"
 ).map(_ % CirceVersion)
 
-val Http4sVersion = "0.23.23"
-
-val Http4sServer = Seq(
-  "org.http4s" %% "http4s-ember-server" % Http4sVersion,
-  "org.http4s" %% "http4s-dsl"          % Http4sVersion
-)
-
-val Http4sClient = Seq(
-  "org.http4s" %% "http4s-ember-client" % Http4sVersion
-)
-
-val Http4sCirce = Seq("org.http4s" %% "http4s-circe" % Http4sVersion)
-
-val CatsEffect = "org.typelevel" %% "cats-effect" % "3.5.2"
-
-val CatsEffectsTesting = "org.typelevel" %% "cats-effect-testing-scalatest" % "1.5.0" % Test
 // -----------------------------------------------------------------------------------------------
-// Example for IsolatedClassLoaderTransport
+// Example for IsolatedClassLoaderTransport and non-cats functions
 // -----------------------------------------------------------------------------------------------
 
 /** This contains the exported trait LsFunctions and related case classes. Normally this should not have any other dependencies, maybe just scalatest for the
@@ -92,6 +70,17 @@ lazy val `ls-caller` = project
 // Cats effects / http4s example
 // -----------------------------------------------------------------------------------------------
 
+val Http4sVersion = "0.23.23"
+val Http4sServer  = Seq(
+  "org.http4s" %% "http4s-ember-server" % Http4sVersion,
+  "org.http4s" %% "http4s-dsl"          % Http4sVersion
+)
+val Http4sClient  = Seq(
+  "org.http4s" %% "http4s-ember-client" % Http4sVersion
+)
+val Http4sCirce   = Seq("org.http4s" %% "http4s-circe" % Http4sVersion)
+val CatsEffect    = "org.typelevel" %% "cats-effect" % "3.5.2"
+
 /** The exports for cats-effects/http4s
   */
 lazy val `cats-ls-exports` = project
@@ -128,3 +117,16 @@ lazy val `cats-http4s-ls-caller` = project
   )
   .dependsOn(`cats-ls-exports`)
   .enablePlugins(FunctionsRemotePlugin)
+
+// -----------------------------------------------------------------------------------------------
+// Kafka examples
+// -----------------------------------------------------------------------------------------------
+
+lazy val `kafka-exports` = project
+  .settings(
+    libraryDependencies ++= Seq(ScalaTest),
+    // make sure exportedArtifact points to the full artifact name of the receiver.
+    buildInfoKeys    := Seq[BuildInfoKey](organization, name, version, scalaVersion, "exportedArtifact" -> "kafka-consumer_3"),
+    buildInfoPackage := "example.kafka"
+  )
+  .enablePlugins(BuildInfoPlugin)

@@ -2,7 +2,7 @@ package exported
 
 import commands.ls.LsFunctionsReceiverFactory
 import commands.ls.impl.LsFunctionsImpl
-import functions.model.Coordinates4
+import functions.model.{Coordinates4, ReceiverInput}
 
 import java.util.function.BiFunction
 
@@ -19,4 +19,4 @@ object Exported extends BiFunction[String, Array[Byte], Array[Byte]]:
   private val functions = LsFunctionsReceiverFactory.invokerMap(impl)
 
   override def apply(coordinates: String, data: Array[Byte]): Array[Byte] =
-    functions(Coordinates4(coordinates)).apply(data)
+    functions(Coordinates4(coordinates)).apply(ReceiverInput(data))
