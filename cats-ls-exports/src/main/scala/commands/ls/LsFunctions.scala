@@ -5,7 +5,9 @@ import commands.model.{LsFile, LsOptions, LsResult}
 
 /** The exported functions of cats effects.
   *
-  * This marks this trait as exported : //> exported
+  * This marks this trait as exported :
+  *
+  * //> exported
   *
   * NOTE: for cats effects exported functions, the return type should always be F.
   */
