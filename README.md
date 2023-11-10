@@ -76,7 +76,8 @@ We can use the generator to integrate with http4s i.e. create routes for the rec
 ## kafka
 
 We can convert function calls to kafka message publishing and subscriptions to function calling.
-[kafka](docs/kafka.md)
+
+[kafka integration](docs/kafka.md)
 
 ## Isolated classloader
 
