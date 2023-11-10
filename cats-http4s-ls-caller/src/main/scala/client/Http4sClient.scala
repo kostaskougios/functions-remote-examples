@@ -23,5 +23,6 @@ object Http4sClient extends IOApp.Simple:
           for
             r1 <- jsonCaller.ls("/tmp/some-dir1")()
             r2 <- avroCaller.ls("/tmp/some-dir2")()
-          yield (r1, r2)
+            r3 <- avroCaller.deleteAllWithFileSizeLessThan("/tmp/test", 8192)()
+          yield (r1, r2, r3)
     yield println(results)

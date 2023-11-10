@@ -1,7 +1,7 @@
 package commands.ls
 
 import cats.effect.kernel.Async
-import commands.model.{LsOptions, LsResult}
+import commands.model.{LsFile, LsOptions, LsResult}
 
 /** The exported functions of cats effects.
   *
@@ -16,7 +16,7 @@ trait LsFunctions[F[_]: Async]:
     *
     * We need a POST here because of LsOptions.
     *
-    * The 1st param set in a method are parameters that are converted to URL params and the type must be compatible with http4s, i.e. IntVar etc.
+    * The 1st param set in a method are parameters that are converted to URL params and the type must be compatible with http4s, i.e. IntVar, LongVar or String.
     *
     * For the ls method, path will be part of the URL but lsOptions must be posted. See the generated LsFunctionsHttp4sRoutes routes.
     */
@@ -27,3 +27,9 @@ trait LsFunctions[F[_]: Async]:
     * //> HTTP-GET
     */
   def fileSize(path: String)(): F[Long]
+
+  /** This has dir & minFileSize as part of the URL and does an http-delete call/route.
+    *
+    * //> HTTP-DELETE
+    */
+  def deleteAllWithFileSizeLessThan(dir: String, minFileSize: Long)(): F[Seq[LsFile]]
