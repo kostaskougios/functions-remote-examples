@@ -1,3 +1,6 @@
+/** This build has different sections for each integration. I.e. an http4s section and a kafka section. These sections are not related to each other, please
+  * examine the section you're interested in.
+  */
 val scala3Version = "3.3.1"
 
 ThisBuild / version      := "0.1-SNAPSHOT"
@@ -10,10 +13,9 @@ ThisBuild / scalacOptions ++= Seq("-unchecked", "-feature", "-deprecation")
 // Dependencies
 // -----------------------------------------------------------------------------------------------
 
-val FunctionsVersion      = "0.1-SNAPSHOT"
-val FunctionsCaller       = "org.functions-remote" %% "functions-caller"   % FunctionsVersion
-val FunctionsReceiver     = "org.functions-remote" %% "functions-receiver" % FunctionsVersion
-val FunctionsHttp4sClient = "org.functions-remote" %% "http4s-client"      % FunctionsVersion
+val FunctionsVersion  = "0.1-SNAPSHOT"
+val FunctionsCaller   = "org.functions-remote" %% "functions-caller"   % FunctionsVersion
+val FunctionsReceiver = "org.functions-remote" %% "functions-receiver" % FunctionsVersion
 
 val ScalaTest    = "org.scalatest"       %% "scalatest"   % "3.2.15" % Test
 val Avro4s       = "com.sksamuel.avro4s" %% "avro4s-core" % "5.0.5"
@@ -70,6 +72,8 @@ lazy val `ls-caller` = project
 // Cats effects / http4s example
 // -----------------------------------------------------------------------------------------------
 
+val FunctionsHttp4sClient = "org.functions-remote" %% "http4s-client" % FunctionsVersion
+
 val Http4sVersion = "0.23.23"
 val Http4sServer  = Seq(
   "org.http4s" %% "http4s-ember-server" % Http4sVersion,
@@ -122,6 +126,10 @@ lazy val `cats-http4s-ls-caller` = project
 // Kafka examples
 // -----------------------------------------------------------------------------------------------
 
+val FunctionsKafkaProducer = "org.functions-remote" %% "kafka-producer" % FunctionsVersion
+val FunctionsKafkaConsumer = "org.functions-remote" %% "kafka-consumer" % FunctionsVersion
+val KafkaClient            = "org.apache.kafka"      % "kafka-clients"  % "3.6.0"
+
 lazy val `kafka-exports` = project
   .settings(
     libraryDependencies ++= Seq(ScalaTest),
@@ -130,3 +138,23 @@ lazy val `kafka-exports` = project
     buildInfoPackage := "example.kafka"
   )
   .enablePlugins(BuildInfoPlugin)
+
+lazy val `kafka-producer` = project
+  .settings(
+    libraryDependencies ++= Seq(ScalaTest, KafkaClient, FunctionsKafkaProducer, Avro4s) ++ Circe,
+    callerExports           := Seq(s"com.example:kafka-exports_3:${version.value}"),
+    callerAvroSerialization := true,
+    callerJsonSerialization := true
+  )
+  .dependsOn(`kafka-exports`)
+  .enablePlugins(FunctionsRemotePlugin)
+
+lazy val `kafka-consumer` = project
+  .settings(
+    libraryDependencies ++= Seq(ScalaTest, KafkaClient, FunctionsKafkaConsumer, Avro4s) ++ Circe,
+    receiverExports           := Seq(s"com.example:kafka-exports_3:${version.value}"),
+    receiverAvroSerialization := true,
+    receiverJsonSerialization := true
+  )
+  .dependsOn(`kafka-exports`)
+  .enablePlugins(FunctionsRemotePlugin)
