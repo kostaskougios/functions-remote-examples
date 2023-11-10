@@ -21,7 +21,7 @@ object Http4sClient extends IOApp.Simple:
           val avroCaller = LsFunctionsCallerFactory.newHttp4sAvroLsFunctions(client, serverUri)
 
           for
-            r1 <- jsonCaller.ls("/tmp/some-dir1")
-            r2 <- avroCaller.ls("/tmp/some-dir2")
+            r1 <- jsonCaller.ls("/tmp/some-dir1")()
+            r2 <- avroCaller.ls("/tmp/some-dir2")()
           yield (r1, r2)
     yield println(results)

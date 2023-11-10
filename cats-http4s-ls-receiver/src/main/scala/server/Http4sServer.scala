@@ -35,5 +35,5 @@ object Http4sServer extends IOApp.Simple:
 
 class LsFunctionsImpl[F[_]: Async] extends LsFunctions[F]:
   private val A                                       = Async[F]
-  override def ls(path: String, lsOptions: LsOptions) = A.pure(LsResult(Seq(LsFile(path + "/file1"), LsFile(path + "/file2"))))
-  override def fileSize(path: String)                 = A.pure(path.length * 1000)
+  override def ls(path: String)(lsOptions: LsOptions) = A.pure(LsResult(Seq(LsFile(path + "/file1"), LsFile(path + "/file2"))))
+  override def fileSize(path: String)()               = A.pure(path.length * 1000)

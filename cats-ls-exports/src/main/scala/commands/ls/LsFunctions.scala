@@ -10,5 +10,20 @@ import commands.model.{LsOptions, LsResult}
   * NOTE: for cats effects exported functions, the return type should always be F.
   */
 trait LsFunctions[F[_]: Async]:
-  def ls(path: String, lsOptions: LsOptions = LsOptions.Defaults): F[LsResult]
-  def fileSize(path: String): F[Long]
+  /** We can change the http-method via a special comment. This will be changed to POST:
+    *
+    * //> HTTP-POST
+    *
+    * We need a POST here because of LsOptions.
+    *
+    * The 1st param set in a method are parameters that are converted to URL params and the type must be compatible with http4s, i.e. IntVar etc.
+    *
+    * For the ls method, path will be part of the URL but lsOptions must be posted. See the generated LsFunctionsHttp4sRoutes routes.
+    */
+  def ls(path: String)(lsOptions: LsOptions = LsOptions.Defaults): F[LsResult]
+
+  /** Use GET method for this one :
+    *
+    * //> HTTP-GET
+    */
+  def fileSize(path: String)(): F[Long]
