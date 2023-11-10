@@ -11,7 +11,7 @@ Start by looking at the exported functions: [LsFunctions](../cats-ls-exports/src
 
 
 Then follow the build script [build-cats-effects-http4s-receiver-and-caller](../bin/build-cats-effects-http4s-receiver-and-caller)
-Then maybe look how the functions-remote-sbt-plugin is configured at [`build.sbt`](../build.sbt)
+Then maybe look how the functions-remote-sbt-plugin is configured at [`build.sbt`](../build.sbt) , check the `http4s` part of the build.
 
 and also examine the code in these projects: 
 - `cats-ls-exports` , i.e. [LsFunctions](../cats-ls-exports/src/main/scala/commands/ls/LsFunctions.scala)
