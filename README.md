@@ -78,6 +78,9 @@ We can use the generator to integrate with http4s i.e. create routes for the rec
 We can convert function calls to kafka message publishing and subscriptions to function calling.
 [kafka](docs/kafka.md)
 
-## Executing functions locally via an isolated classloader or spawning a jvm for each call
+## Isolated classloader
+
+This executes functions locally using an IsolatedClassLoader. The caller doesn't depend on the receiver but internally
+coursier is used to resolve the receiver dependency.
 
 [local receivers](docs/local.md)

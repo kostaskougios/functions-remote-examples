@@ -6,6 +6,12 @@
 # - Then we need to publish ls-receiver locally because the jars are used by the isolated classloader to load and run the implementation.
 #   (we do a compile first because it seems sbt doesn't see the generated classes if we just do a publishLocal)
 # - Finally we run the caller which calls the functions. Internally the isolated class loader is used to load the function's impl.
-sbt ls-exports/publishLocal ls-receiver/compile ls-receiver/publishLocal
+# Note: the sbt plugin will re-generate the code only after a "clean"
+sbt ls-exports/publishLocal \
+  ls-receiver/clean
+  ls-caller/clean
+  ls-receiver/compile \
+  ls-receiver/publishLocal
+  ls-caller/functionsRemoteResolveCallerClassloaderDependencies
 sbt "-Dfunctions.debug" "ls-caller/runMain example.callLsFunctionViaAvroSerialization"
 

@@ -3,6 +3,11 @@
 # - First we need to publish the exported LsFunctions locally
 # - Then we can compile the receiver & caller. The sbt config invokes the functions-remote-sbt-plugin to
 #   generate the code (http4s routes for the server and http4s client helpers for the client)
-sbt cats-ls-exports/publishLocal cats-http4s-ls-receiver/compile cats-http4s-ls-caller/compile
+# Note: the sbt plugin will re-generate the code only after a "clean"
+sbt cats-ls-exports/publishLocal \
+  cats-http4s-ls-receiver/clean \
+  cats-http4s-ls-caller/clean \
+  cats-http4s-ls-receiver/compile \
+  cats-http4s-ls-caller/compile
 
 echo "Caller & Receiver classes are generated, now we are ready to run the server, Http4sServer and the client, Http4sClient"
