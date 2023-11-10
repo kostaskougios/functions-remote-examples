@@ -21,7 +21,7 @@ object Http4sServer extends IOApp.Simple:
     val routesJson   = LsFunctionsReceiverFactory.newJsonLsFunctionsRoutes(impl)
     val routesAvro   = LsFunctionsReceiverFactory.newAvroLsFunctionsRoutes(impl)
     // So we setup both routes. Check the source code of the routes, they are by default
-    // configured to i.e. / commands.ls.LsFunctions / ls / Json but this can be overridden.
+    // configured to urls like / commands.ls.LsFunctions / ls / Json but this can be overridden.
     val routes       = HttpRoutes.of(routesJson.allRoutes orElse routesAvro.allRoutes)
     val finalHttpApp = Logger.httpApp(true, true)(routes.orNotFound)
 
