@@ -1,0 +1,15 @@
+#! /bin/sh
+
+# - First we need to publish the exported KafkaFunctions locally.
+# - Then we can compile the receiver & caller. The sbt config invokes the functions-remote-sbt-plugin to
+#   generate the code (serializers, factories etc)
+# Note: the sbt plugin will re-generate the code only after a "clean"
+# This will run the producer and consumer at the end, which expect kafka on port 9092 to be running.
+sbt kafka-exports/publishLocal \
+  kafka-producer/clean \
+  kafka-consumer/clean \
+  kafka-producer/compile \
+  kafka-consumer/compile \
+  "kafka-producer/runMain example.kafka.kafkaProducer" \
+  "kafka-consumer/runMain example.kafka.kafkaConsumer"
+
