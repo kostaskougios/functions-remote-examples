@@ -16,7 +16,7 @@ trait LsFunctions[F[_]: Async]:
     *
     * //> HTTP-POST
     *
-    * We need a POST here because of LsOptions.
+    * We need a POST here because of LsOptions. The default method is PUT.
     *
     * The 1st param set in a method are parameters that are converted to URL params and the type must be compatible with http4s, i.e. IntVar, LongVar or String.
     *
@@ -27,6 +27,8 @@ trait LsFunctions[F[_]: Async]:
   /** Use GET method for this one :
     *
     * //> HTTP-GET
+    *
+    * Note because of the http-get, the 2nd param set has to be empty because GET doesn't accept data in the body of the request.
     */
   def fileSize(path: String)(): F[Long]
 
