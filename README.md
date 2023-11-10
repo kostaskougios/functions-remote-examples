@@ -25,13 +25,18 @@ And while we can do that within a jvm instance, it would be useful to be able to
 are running in the same box or remote boxes.
 
 Functions-remote is a code generator for calling functions "remotely", using different serialization methods (like json or avro), and different remote transports (like http).
-Remotely means we may use http as a transport (i.e. via http4s) or just use an isolated classloader as transport so that we can
+Remotely means we may use http as a transport (i.e. via http4s), kafka where calling is publishing and subscribing is invoking the actual implementation of the function,
+or just use an isolated classloader as transport so that we can
 execute the function locally or maybe just spawn a new jvm to call the function. 
 We'll see all these in more details below as well as why it can be useful to use different transports.
 
 Effectively functions-remote allows the simplicity of `f(x) = y` no matter where `f` will really run. 
 
 The generated code is very readable and as if written by a person.
+
+There are many benefits using functions instead of the usual manual serialization of case classes. Apart not having to write
+any serialization code, it is also a lot more readable and easier to mock in tests. Also easier to change where/how the call
+will be done in the future if there is a need to do that.
 
 ## The exported functions
 
