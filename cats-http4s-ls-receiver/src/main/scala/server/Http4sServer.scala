@@ -10,8 +10,6 @@ import org.http4s.ember.server.EmberServerBuilder
 import org.http4s.implicits.*
 import org.http4s.server.middleware.Logger
 
-/** Note: the generated routes are better suited for backend to backend calls, all of them are via PUT requests with the body been the serialized function args.
-  */
 object Http4sServer extends IOApp.Simple:
   val run = newServer[IO](port"8080").useForever
 
