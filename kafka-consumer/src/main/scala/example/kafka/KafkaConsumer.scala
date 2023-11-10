@@ -11,9 +11,14 @@ import scala.util.Using
 
 @main
 def kafkaConsumer() =
-  val consumer = new KafkaConsumer(KafkaConf.props, new ByteArrayDeserializer, new ByteArrayDeserializer)
-  val m        = KafkaFunctionsReceiverFactory.invokerMap(new KafkaFunctionsImpl)
-  Using.resource(KafkaPoller(consumer, m)): poller =>
+  // The serialization is done for us by functions-remote, so we just need ByteArraySerializer
+  val consumer   = new KafkaConsumer(KafkaConf.props, new ByteArrayDeserializer, new ByteArrayDeserializer)
+  // This is a map of (function-coordinates , serialization format)  -> function-impl and is used
+  // to call the correct function with the correct deserializer
+  val invokerMap = KafkaFunctionsReceiverFactory.invokerMap(new KafkaFunctionsImpl)
+
+  // ok now we're ready to poll for data.
+  Using.resource(KafkaPoller(consumer, invokerMap)): poller =>
     consumer.subscribe(Seq("person").asJava)
     poller.poll(Duration.ofSeconds(10))
 
