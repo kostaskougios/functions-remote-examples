@@ -52,7 +52,7 @@ We can then use functions-remote to create code for us that:
 - create a `transport` for http4s, or locally via a classloader (we'll see that later on) etc. The transport is an `f( coordinates , Array[Byte] ): Array[Byte]`
 - create an `LsFunctionsReceiver` that receives the `Array[Byte]` and converts it to a call to `LsFunctionsImpl`
 
-After the code generation, we can use the generated code to call the function "remotely" (note for http4s and cats-effects, see the http4s integration):
+After the code generation, we can use the generated code to call the function "remotely" (note for http4s and cats-effects, see the http4s integration below):
 ```scala
 val lsFunctions: LsFunctions = builder.newAvroLsFunctions
 val result: LsResult         = lsFunctions.ls("/tmp")
@@ -65,22 +65,6 @@ care of actually calling the function implementation.
 
 Our code invokes `LsFunctions.ls(... args ...)` ➡️ args are copied to the generated `Ls` case class ➡️ `Ls` is serialized to `Array[Byte]` ➡️ the transport is used to transfer the bytes to the `Receiver` ➡️ on the `Receiver` side we deserialize `Ls` and use it to invoke the actual `LsFunctionsImpl` ➡️ `LsResult` is serialized and send back to the caller
 
-## Project structure for exporting functions
-
-We will need 2 modules:
-- a module with the exported traits and related case classes
-- a module to implement the traits and be able to receive requests via its transport(s)
-
-```
-<project>
-    |- ls-exports           : exported traits and related case classes, no extra code here, minimum or none external dependencies
-    |- ls-receiver          : depends on ls-exports and implements the exported traits along with some extra code for the transport
-```
-
-## Project structure for calling the exported functions
-
-This should be just a standard module that depends on `ls-exports` only. The build scripts should also generate code to do the calls.
-
 # Integrations
 
 ## http4s 
@@ -89,6 +73,10 @@ We can use the generator to integrate with http4s i.e. create routes for the rec
 
 [HTTP4S Integration](docs/http4s.md)
 
+## kafka
+
+We can convert function calls to kafka message publishing and subscriptions to function calling.
+[kafka](docs/kafka.md)
 
 ## Executing functions locally via an isolated classloader or spawning a jvm for each call
 
