@@ -17,6 +17,7 @@ In this example both avro and json serialization is supported for publishing and
 
 The rest of the documentation can be found in the implementation itself. Here are a list of things to have a look at:
 
+- The [exported methods](../kafka-exports/src/main/scala/example/kafka/KafkaFunctions.scala) 
 - [The shell script that builds and runs producer and consumer](../bin/build-kafka-producer-consumer)
 - [sbt build.sbt, kafka section](../build.sbt) where the functions-remote-sbt-plugin is configured to generate classes
 - [producer](../kafka-producer/src/main/scala/example/kafka/KafkaProducer.scala)
