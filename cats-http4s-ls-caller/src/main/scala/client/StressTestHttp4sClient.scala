@@ -2,7 +2,7 @@ package client
 
 import cats.effect.*
 import cats.syntax.all.*
-import commands.ls.SimpleFunctionsCallerFactory
+import commands.ls.StressTestFunctionsCallerFactory
 import fs2.io.net.Network
 import org.http4s.*
 import org.http4s.ember.client.EmberClientBuilder
@@ -18,7 +18,7 @@ object StressTestHttp4sClient extends IOApp.Simple:
         .use: client =>
           val serverUri  = uri"http://localhost:8081"
           // We can call the functions with both json and avro serialization
-          val avroCaller = SimpleFunctionsCallerFactory.newHttp4sAvroSimpleFunctions(client, serverUri)
+          val avroCaller = StressTestFunctionsCallerFactory.newHttp4sAvroStressTestFunctions(client, serverUri)
 
           for r2 <- avroCaller.add(1, 2)()
           yield r2

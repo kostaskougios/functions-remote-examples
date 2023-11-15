@@ -6,7 +6,7 @@ import cats.effect.kernel.Async
   *
   * //> exported
   */
-trait SimpleFunctions[F[_]: Async]:
+trait StressTestFunctions[F[_]: Async]:
   /** //> HTTP-GET
     */
   def add(a: Int, b: Int)(): F[Int]
