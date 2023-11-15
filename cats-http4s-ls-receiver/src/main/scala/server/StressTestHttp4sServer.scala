@@ -24,7 +24,7 @@ object StressTestHttp4sServer extends IOApp.Simple:
         val startReqCount = impl.callsCount
         Thread.sleep(1000)
         val reqCount      = impl.callsCount
-        println(s"Total requests: $reqCount, per second : ${reqCount - startReqCount}")
+        println(s"Total requests: $reqCount, per second : ${reqCount - startReqCount}, jvm threads : ${ThreadCounter.countThreads()}")
     }
     val routesAvro   = StressTestFunctionsReceiverFactory.newAvroStressTestFunctionsRoutes(impl)
     val routes       = HttpRoutes.of(routesAvro.allRoutes)
