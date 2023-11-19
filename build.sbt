@@ -158,3 +158,19 @@ lazy val `kafka-consumer` = project
   )
   .dependsOn(`kafka-exports`)
   .enablePlugins(FunctionsRemotePlugin)
+
+// -----------------------------------------------------------------------------------------------
+// fiber & sockets examples
+// -----------------------------------------------------------------------------------------------
+
+val FunctionsFiberSocketsServer = "org.functions-remote" %% "loom-sockets-server" % FunctionsVersion
+
+lazy val `ls-fiber-sockets-server` = project
+  .settings(
+    receiverExports           := Seq(s"com.example:ls-exports_3:${version.value}"),
+    receiverJsonSerialization := true,
+    receiverAvroSerialization := true,
+    libraryDependencies ++= Seq(Avro4s, FunctionsFiberSocketsServer) ++ Circe
+  )
+  .dependsOn(`ls-exports`)
+  .enablePlugins(FunctionsRemotePlugin)
