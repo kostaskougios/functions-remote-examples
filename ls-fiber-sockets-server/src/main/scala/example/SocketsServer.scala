@@ -21,6 +21,7 @@ import scala.util.Using
   Using.resource(FiberExecutor()): executor =>
     Using.resource(FiberSocketServer.startServer(Port, invokerMap, executor)): server =>
       println(s"Server listening on port $Port")
+      // Server is listening, now we'll go into a forever loop printing some stats every second
       while (true)
         Thread.sleep(1000)
         val total = server.stats.totalRequestCount
