@@ -77,7 +77,7 @@ Our code invokes `LsFunctions.ls(... args ...)` ➡️ args are copied to the ge
 ## plain sockets and fibers
 
 This is by far the fastest (10x faster than http4s) option for api calls that don't require http. Also it doesn't
-require any IO frameworks and doesn't block despite teh function call seemingly been synchronous. jdk21 or better only. 
+require any IO frameworks and doesn't block despite the function call seemingly been synchronous. jdk21 or better only. 
 
 [sockets and fibers](docs/sockets.md)
 
