@@ -5,7 +5,7 @@ This is best for
 - Scala api's that talk to each other and don't require http to do so.
 - Performance is important, i.e. 10x more throughput than http4s because there is no http-protocol overhead.
 
-We will create a server that can serve calls to the `LsFunctions` trait:
+We will create a server that can serve calls to the `LsFunctions` trait with both avro and json serialization. The exported functions:
 
 ```scala
 trait LsFunctions:
