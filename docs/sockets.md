@@ -1,7 +1,7 @@
 # Sockets and fibers for api's that don't require http
 
 This is best for 
-- Very simple code, no IO frameworks, where calls seem synchronous but there is no performance penalty for waiting the results from the server due to the fibers of jdk 21+. Tests on a macbook pro M1 that runs both client and server had 188k requests/sec throughput for a simple add(a,b):Int function compared to 15k of the same with http4s.
+- Simplicity in the code base, no IO frameworks, where calls seem synchronous but there is no performance penalty for waiting the results from the server due to the fibers of jdk 21+. Tests on a macbook pro M1 that runs both client and server had 188k requests/sec throughput for a simple add(a,b):Int function compared to 15k of the same with http4s.
 - Scala api's that talk to each other and don't require http to do so.
 - Performance is important, i.e. 10x more throughput than http4s because there is no http-protocol overhead.
 
