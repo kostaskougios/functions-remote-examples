@@ -1,6 +1,6 @@
 package example
 
-import commands.ls.LsFunctionsCallerFactory
+import commands.ls.{LsFunctions, LsFunctionsCallerFactory}
 import functions.fibers.FiberExecutor
 import functions.sockets.{SocketPool, SocketTransport}
 
@@ -16,9 +16,13 @@ import scala.util.Using
       // ok now ready to create functions that will do calls remotely.
 
       // The one with avro serialization
-      val lsAvroSerialized = LsFunctionsCallerFactory.newAvroLsFunctions(transport.transportFunction)
-      println(lsAvroSerialized.ls("/tmp"))
+      val lsA: LsFunctions = LsFunctionsCallerFactory.newAvroLsFunctions(transport.transportFunction)
+      // We will call the function which will result of all arguments avro-serialized and send over a socket
+      // to the server which will respond with the results
+      println(lsA.ls("/tmp"))
 
       // The same but with json serialization
-      val lsJsonSerialized = LsFunctionsCallerFactory.newJsonLsFunctions(transport.transportFunction)
-      println(lsJsonSerialized.ls("/tmp"))
+      val lsJ: LsFunctions = LsFunctionsCallerFactory.newJsonLsFunctions(transport.transportFunction)
+      // We will call the function which will result of all arguments json-serialized and send over a socket
+      // to the server which will respond with the results
+      println(lsJ.ls("/tmp"))
