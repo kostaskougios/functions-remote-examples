@@ -15,7 +15,7 @@ import scala.util.Using
   */
 @main def socketServer(): Unit =
   val Port       = 8080
-  // This invoke map supports calls with both avro & json serialization as per the sbt config
+  // This invoke map supports calls with both avro & json serialization as per the sbt config.
   val invokerMap = LsFunctionsReceiverFactory.invokerMap(new LsFunctionsImpl)
 
   Using.resource(FiberExecutor()): executor =>

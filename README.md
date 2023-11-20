@@ -72,6 +72,13 @@ Our code invokes `LsFunctions.ls(... args ...)` ➡️ args are copied to the ge
 
 # Integrations
 
+## plain sockets and fibers
+
+This is by far the fastest (10x faster than http4s) option for api calls that don't require http. Also it doesn't
+require any IO frameworks and doesn't block despite teh function call seemingly been synchronous. jdk21 or better only. 
+
+[sockets and fibers](docs/sockets.md)
+
 ## http4s 
 
 We can use the generator to integrate with http4s i.e. create routes for the receiver and create an http4s client for the caller.
