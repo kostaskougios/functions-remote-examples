@@ -1,5 +1,7 @@
 # functions-remote
 
+See "Integrations" below for a list of integrations (http4s, sockets and fibers, kafka etc).
+
 Note: Only for scala3. Currently, circe-json and avro4s serializations are supported.
 
 Note: At the moment there are no artifacts published on maven repos. To run the examples locally do:
