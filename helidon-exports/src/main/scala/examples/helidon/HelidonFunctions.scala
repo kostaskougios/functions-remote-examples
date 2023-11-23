@@ -2,6 +2,15 @@ package examples.helidon
 
 import examples.helidon.model.{LsFile, LsOptions, LsResult}
 
+/** The exported functions for the helidon demo.
+  *
+  * This marks this trait as exported :
+  *
+  * //> exported
+  *
+  * NOTE: this should be run with jdk21 or newer and uses fiber to avoid blocking. Despite the calls seemingly been synchronous, in fact there is no
+  * thread-blocking.
+  */
 trait HelidonFunctions:
   /** We can change the http-method via a special comment. This will be changed to POST:
     *

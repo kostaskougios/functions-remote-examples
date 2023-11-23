@@ -191,6 +191,13 @@ lazy val `ls-fiber-sockets-client` = project
 // helidon webserver/client examples
 // -----------------------------------------------------------------------------------------------
 
+val HelidonVersion         = "4.0.0"
+val HelidonServer          = "io.helidon.webserver"  % "helidon-webserver"       % HelidonVersion
+val HelidonClient          = "io.helidon.webclient"  % "helidon-webclient-http2" % HelidonVersion
+val HelidonServerLogging   = "io.helidon.logging"    % "helidon-logging-jul"     % HelidonVersion
+val FunctionsHelidonServer = "org.functions-remote" %% "helidon-server"          % FunctionsVersion
+val FunctionsHelidonClient = "org.functions-remote" %% "helidon-client"          % FunctionsVersion
+
 lazy val `helidon-exports` = project
   .settings(
     libraryDependencies ++= Seq(ScalaTest),
@@ -199,3 +206,33 @@ lazy val `helidon-exports` = project
     buildInfoPackage := "examples.helidon"
   )
   .enablePlugins(BuildInfoPlugin)
+
+lazy val `helidon-server` = project
+  .settings(
+    receiverExports           := Seq(s"com.example:helidon-exports_3:${version.value}"),
+    receiverJsonSerialization := true,
+    receiverAvroSerialization := true,
+    receiverHelidonRoutes     := true,
+    libraryDependencies ++= Seq(
+      Avro4s,
+      FunctionsReceiver,
+      FunctionsAvro,
+      FunctionsHelidonServer,
+      ScalaTest,
+      HelidonServer,
+      HelidonServerLogging % Test
+    ) ++ Circe
+  )
+  .dependsOn(`helidon-exports`)
+  .enablePlugins(FunctionsRemotePlugin)
+
+lazy val `helidon-client` = project
+  .settings(
+    callerExports                := Seq(s"com.example:helidon-exports_3:${version.value}"),
+    callerJsonSerialization      := true,
+    callerAvroSerialization      := true,
+    callerHelidonClientTransport := true,
+    libraryDependencies ++= Seq(Avro4s, ScalaTest, HelidonClient, FunctionsAvro, FunctionsCaller, FunctionsHelidonClient) ++ Circe
+  )
+  .dependsOn(`helidon-exports`)
+  .enablePlugins(FunctionsRemotePlugin)

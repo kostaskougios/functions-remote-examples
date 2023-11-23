@@ -1,0 +1,13 @@
+#! /bin/sh
+
+# - First we need to publish the exported trait's artifact locally. The published jar will be read by the code generator in order to
+#   generate the client / server / serialization / transport classes. The code generator resolves the artifact locally or from
+#   a maven repository using Coursier.
+# - After generating the code (via compiling), we are ready to run the server and client
+# Note: the sbt plugin will re-generate the code only after a "clean"
+sbt helidon-exports/publishLocal \
+  helidon-server/clean \
+  helidon-client/clean \
+  helidon-server/compile \
+  helidon-client/compile
+
