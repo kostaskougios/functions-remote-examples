@@ -1,6 +1,7 @@
 package examples
 
-import examples.helidon.HelidonFunctionsCallerFactory
+import examples.helidon.{HelidonFunctions, HelidonFunctionsCallerFactory}
+import examples.helidon.model.LsOptions
 import functions.helidon.transport.HelidonTransport
 import io.helidon.webclient.api.WebClient
 
@@ -14,12 +15,20 @@ import io.helidon.webclient.api.WebClient
   // We need a helidon transport which will send/receive arrays of bytes.
   val transport = new HelidonTransport(client)
 
+  // Use the generated HelidonFunctionsCallerFactory to get instances of our exported trait.
   println("We can call the functions using avro serialization")
-  val avroFunctions = HelidonFunctionsCallerFactory.newHelidonAvroHelidonFunctions(transport)
-  println(avroFunctions.ls("/tmp")())
-  println(avroFunctions.fileSize("/tmp")())
-  println(avroFunctions.deleteAllWithFileSizeLessThan("/tmp", 500)())
+  val avroFunctions: HelidonFunctions = HelidonFunctionsCallerFactory.newHelidonAvroHelidonFunctions(transport)
+  // will do a POST request (configured as a comment at the HelidonFunctions trait) to the server. The convention is :
+  // - the first param list , "/tmp" in this example, becomes part of the url
+  // - the second param list, LsOptions in this example, is avro-serialized and send as the body of the request.
+  println(avroFunctions.ls("/tmp")(LsOptions(includeDirs = true))) // will print: LsResult(List(LsFile(tmp/file1), LsFile(tmp/file2)))
+
+  // will do a GET request with /tmp as part of the url.
+  println(avroFunctions.fileSize("/tmp")()) // will print: 3000
+
+  // will do a DELETE request
+  println(avroFunctions.deleteAllWithFileSizeLessThan("/tmp", 500)()) // will print: List(LsFile(tmp/f1), LsFile(tmp/f2))
 
   println("We can call the functions using json serialization")
-  val jsonFunctions = HelidonFunctionsCallerFactory.newHelidonJsonHelidonFunctions(transport)
+  val jsonFunctions: HelidonFunctions = HelidonFunctionsCallerFactory.newHelidonJsonHelidonFunctions(transport)
   println(jsonFunctions.ls("/tmp")())
