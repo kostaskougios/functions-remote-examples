@@ -16,6 +16,7 @@ ThisBuild / scalacOptions ++= Seq("-unchecked", "-feature", "-deprecation")
 val FunctionsVersion  = "0.1-SNAPSHOT"
 val FunctionsCaller   = "org.functions-remote" %% "functions-caller"   % FunctionsVersion
 val FunctionsReceiver = "org.functions-remote" %% "functions-receiver" % FunctionsVersion
+val FunctionsAvro     = "org.functions-remote" %% "functions-avro"     % FunctionsVersion
 
 val ScalaTest    = "org.scalatest"       %% "scalatest"   % "3.2.15" % Test
 val Avro4s       = "com.sksamuel.avro4s" %% "avro4s-core" % "5.0.5"
@@ -49,7 +50,7 @@ lazy val `ls-receiver` = project
     receiverExports           := Seq(s"com.example:ls-exports_3:${version.value}"),
     receiverJsonSerialization := true,
     receiverAvroSerialization := true,
-    libraryDependencies ++= Seq(Avro4s, FunctionsReceiver) ++ Circe
+    libraryDependencies ++= Seq(Avro4s, FunctionsAvro, FunctionsReceiver) ++ Circe
   )
   .dependsOn(`ls-exports`)
   .enablePlugins(FunctionsRemotePlugin)
@@ -63,7 +64,7 @@ lazy val `ls-caller` = project
     callerJsonSerialization       := true,
     callerClassloaderTransport    := true,
     callerClassloaderDependencies := Seq(s"com.example:ls-receiver_3:${version.value}"),
-    libraryDependencies ++= Seq(Avro4s, FunctionsCaller) ++ Circe
+    libraryDependencies ++= Seq(Avro4s, FunctionsAvro, FunctionsCaller) ++ Circe
   )
   .dependsOn(`ls-exports`)
   .enablePlugins(FunctionsRemotePlugin)
@@ -104,7 +105,7 @@ lazy val `cats-http4s-ls-receiver` = project
     receiverJsonSerialization := true,
     receiverAvroSerialization := true,
     receiverHttp4sRoutes      := true,
-    libraryDependencies ++= Seq(Avro4s, FunctionsReceiver) ++ Http4sServer ++ Circe
+    libraryDependencies ++= Seq(Avro4s, FunctionsAvro, FunctionsReceiver) ++ Http4sServer ++ Circe
   )
   .dependsOn(`cats-ls-exports`)
   .enablePlugins(FunctionsRemotePlugin)
@@ -117,7 +118,7 @@ lazy val `cats-http4s-ls-caller` = project
     callerAvroSerialization     := true,
     callerJsonSerialization     := true,
     callerHttp4sClientTransport := true,
-    libraryDependencies ++= Seq(Avro4s, FunctionsHttp4sClient) ++ Http4sClient ++ Circe
+    libraryDependencies ++= Seq(Avro4s, FunctionsAvro, FunctionsHttp4sClient) ++ Http4sClient ++ Circe
   )
   .dependsOn(`cats-ls-exports`)
   .enablePlugins(FunctionsRemotePlugin)
@@ -141,7 +142,7 @@ lazy val `kafka-exports` = project
 
 lazy val `kafka-producer` = project
   .settings(
-    libraryDependencies ++= Seq(ScalaTest, KafkaClient, FunctionsKafkaProducer, Avro4s) ++ Circe,
+    libraryDependencies ++= Seq(ScalaTest, KafkaClient, FunctionsKafkaProducer, Avro4s, FunctionsAvro) ++ Circe,
     callerExports           := Seq(s"com.example:kafka-exports_3:${version.value}"),
     callerAvroSerialization := true,
     callerJsonSerialization := true
@@ -151,7 +152,7 @@ lazy val `kafka-producer` = project
 
 lazy val `kafka-consumer` = project
   .settings(
-    libraryDependencies ++= Seq(ScalaTest, KafkaClient, FunctionsKafkaConsumer, Avro4s) ++ Circe,
+    libraryDependencies ++= Seq(ScalaTest, KafkaClient, FunctionsKafkaConsumer, Avro4s, FunctionsAvro) ++ Circe,
     receiverExports           := Seq(s"com.example:kafka-exports_3:${version.value}"),
     receiverAvroSerialization := true,
     receiverJsonSerialization := true
@@ -171,7 +172,7 @@ lazy val `ls-fiber-sockets-server` = project
     receiverExports           := Seq(s"com.example:ls-exports_3:${version.value}"),
     receiverJsonSerialization := true,
     receiverAvroSerialization := true,
-    libraryDependencies ++= Seq(Avro4s, FunctionsFiberSocketsServer) ++ Circe
+    libraryDependencies ++= Seq(Avro4s, FunctionsAvro, FunctionsFiberSocketsServer) ++ Circe
   )
   .dependsOn(`ls-exports`)
   .enablePlugins(FunctionsRemotePlugin)
@@ -181,7 +182,20 @@ lazy val `ls-fiber-sockets-client` = project
     callerExports           := Seq(s"com.example:ls-exports_3:${version.value}"),
     callerJsonSerialization := true,
     callerAvroSerialization := true,
-    libraryDependencies ++= Seq(Avro4s, FunctionsFiberSocketsClient) ++ Circe
+    libraryDependencies ++= Seq(Avro4s, FunctionsAvro, FunctionsFiberSocketsClient) ++ Circe
   )
   .dependsOn(`ls-exports`)
   .enablePlugins(FunctionsRemotePlugin)
+
+// -----------------------------------------------------------------------------------------------
+// helidon webserver/client examples
+// -----------------------------------------------------------------------------------------------
+
+lazy val `helidon-exports` = project
+  .settings(
+    libraryDependencies ++= Seq(ScalaTest),
+    // make sure exportedArtifact points to the full artifact name of the receiver.
+    buildInfoKeys    := Seq[BuildInfoKey](organization, name, version, scalaVersion, "exportedArtifact" -> "helidon-server_3"),
+    buildInfoPackage := "examples.helidon"
+  )
+  .enablePlugins(BuildInfoPlugin)
