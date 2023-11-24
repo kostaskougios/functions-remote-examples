@@ -4,6 +4,7 @@
 #   generate the caller / receiver / serialization / transport classes. The code generator resolves the artifact locally or from
 #   a maven repository using Coursier.
 # - After generating the code (via compiling), we are ready to run the server and client
+# - The code is generated when we do an `sbt compile` for a module.
 # Note: the sbt plugin will re-generate the code only after a "clean"
 sbt ls-exports/publishLocal \
   ls-fiber-sockets-server/clean \
