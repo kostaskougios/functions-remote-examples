@@ -74,6 +74,13 @@ Our code invokes `LsFunctions.ls(... args ...)` ➡️ args are copied to the ge
 
 # Integrations
 
+## helidon web server and client on jdk21's fibers
+
+For http based api's this is a good choice. Due to fibers, there is no need for IO frameworks to have good performance.
+And the code is a lot simpler.
+
+[helidon](docs/helidon.md)
+
 ## plain sockets and fibers
 
 This is by far the fastest (10x faster than http4s) option for api calls that don't require http. Also it doesn't

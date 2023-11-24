@@ -4,8 +4,6 @@ import examples.helidon.StressTestFunctionsCallerFactory
 import functions.helidon.transport.HelidonTransport
 import io.helidon.webclient.api.WebClient
 
-import java.io.UncheckedIOException
-
 @main def stressTestHelidonClient(): Unit =
   val client = WebClient
     .builder()
@@ -16,7 +14,5 @@ import java.io.UncheckedIOException
 
   val avroFunctions = StressTestFunctionsCallerFactory.newHelidonAvroStressTestFunctions(transport)
   for i <- 1 to 1_000_000 do
-    try
-      val r = avroFunctions.add(i, 5)()
-      if r != i + 5 then throw new IllegalStateException(s"Invalid response for add($i,5), response = $r")
-    catch case e: UncheckedIOException => e.printStackTrace()
+    val r = avroFunctions.add(i, 5)()
+    if r != i + 5 then throw new IllegalStateException(s"Invalid response for add($i,5), response = $r")
