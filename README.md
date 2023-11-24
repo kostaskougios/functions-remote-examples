@@ -1,6 +1,6 @@
 # functions-remote
 
-See "Integrations" below for a list of integrations (http4s, sockets and fibers, kafka etc).
+See "Integrations" below for a list of integrations (http4s, helidon http with fibers, sockets and fibers, kafka etc).
 
 Note: Only for scala3. Currently, circe-json and avro4s serializations are supported.
 
