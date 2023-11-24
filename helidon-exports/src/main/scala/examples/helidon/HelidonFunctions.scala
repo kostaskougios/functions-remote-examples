@@ -16,7 +16,7 @@ trait HelidonFunctions:
     *
     * //> HTTP-POST
     *
-    * We need a POST here because of LsOptions. The default method is PUT.
+    * We need a POST here because of LsOptions. Note the default method is PUT.
     *
     * The 1st param set in a method are parameters that are converted to URL params and the type must be primitives, Int, Long, String are supported.
     *
