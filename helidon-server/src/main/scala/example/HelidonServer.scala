@@ -7,17 +7,16 @@ import io.helidon.webserver.WebServer
 import io.helidon.webserver.http.HttpRouting
 
 @main def helidonServer(): Unit =
+  // our exported functions impl, see the code at the end of this file
+  val impl = new HelidonFunctionsImpl
+
   // configure the helidon server routes using the generated classes
   val routesBuilder = HttpRouting.builder()
-  // our exported functions impl, see the code at the end of this file
-  val impl          = new HelidonFunctionsImpl
-
   // add the routes for the avro serialization
-  val avroRoutes = HelidonFunctionsReceiverFactory.newAvroHelidonFunctionsHelidonRoutes(impl)
+  val avroRoutes    = HelidonFunctionsReceiverFactory.newAvroHelidonFunctionsHelidonRoutes(impl)
   avroRoutes.routes(routesBuilder)
-
   // add the same routes but with json serialization
-  val jsonRoutes = HelidonFunctionsReceiverFactory.newJsonHelidonFunctionsHelidonRoutes(impl)
+  val jsonRoutes    = HelidonFunctionsReceiverFactory.newJsonHelidonFunctionsHelidonRoutes(impl)
   jsonRoutes.routes(routesBuilder)
 
   // now proceed with the standard helidon configuration
