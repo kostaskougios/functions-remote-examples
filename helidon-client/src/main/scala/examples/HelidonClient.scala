@@ -6,7 +6,7 @@ import functions.helidon.transport.HelidonTransport
 import io.helidon.webclient.api.WebClient
 
 @main def helidonClient(): Unit =
-  // Create a normal WebClient (v4 so that we take advantage of fibers on jdk21)
+  // Create a normal WebClient (v4 so that we take advantage of fibers on jdk21, helidon-webclient-http2 artifact)
   val client = WebClient
     .builder()
     .baseUri(s"http://localhost:8080")
