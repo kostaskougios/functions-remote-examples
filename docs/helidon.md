@@ -1,5 +1,7 @@
 # Helidon web server and client on jdk21's fibers 
 
+Warning: currently the helidon WebClient opens 1 connection per request, something I am looking at resolving with the helidon community.
+
 This is best for
 - Simplicity in the code base, no IO frameworks, where calls seem synchronous but there is no performance penalty for waiting the results from the server due to the fibers of jdk 21+.
 - Creating rest api's
