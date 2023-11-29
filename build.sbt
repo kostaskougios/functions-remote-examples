@@ -74,6 +74,7 @@ lazy val `ls-caller` = project
 // -----------------------------------------------------------------------------------------------
 
 val FunctionsHttp4sClient = "org.functions-remote" %% "http4s-client" % FunctionsVersion
+val FunctionsHttp4sServer = "org.functions-remote" %% "http4s-server" % FunctionsVersion
 
 val Http4sVersion = "0.23.23"
 val Http4sServer  = Seq(
@@ -105,7 +106,7 @@ lazy val `cats-http4s-ls-receiver` = project
     receiverJsonSerialization := true,
     receiverAvroSerialization := true,
     receiverHttp4sRoutes      := true,
-    libraryDependencies ++= Seq(Avro4s, FunctionsAvro, FunctionsReceiver) ++ Http4sServer ++ Circe
+    libraryDependencies ++= Seq(Avro4s, FunctionsAvro, FunctionsReceiver, FunctionsHttp4sServer) ++ Http4sServer ++ Circe
   )
   .dependsOn(`cats-ls-exports`)
   .enablePlugins(FunctionsRemotePlugin)
