@@ -193,7 +193,7 @@ lazy val `ls-fiber-sockets-client` = project
 // -----------------------------------------------------------------------------------------------
 
 val HelidonVersion         = "4.0.1"
-val HelidonServer          = "io.helidon.webserver"  % "helidon-webserver"       % HelidonVersion
+val HelidonServer          = "io.helidon.webserver"  % "helidon-webserver-http2" % HelidonVersion
 val HelidonClient          = "io.helidon.webclient"  % "helidon-webclient-http2" % HelidonVersion
 val HelidonServerLogging   = "io.helidon.logging"    % "helidon-logging-jul"     % HelidonVersion
 val FunctionsHelidonServer = "org.functions-remote" %% "helidon-server"          % FunctionsVersion
